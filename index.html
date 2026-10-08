@@ -1,0 +1,5490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mi Vida · Dashboard</title>
+
+<style>
+:root{
+  --bg:#fffaf8;
+  --paper:#fff;
+  --pink:#efabc0;
+  --pink-dark:#a95f7c;
+  --pink-light:#fae1e9;
+  --rose:#d7839e;
+  --lav:#cbbbe9;
+  --blue:#c5dff0;
+  --green:#c9e1ca;
+  --yellow:#f4e0a5;
+  --peach:#f4cdb8;
+  --text:#453d43;
+  --muted:#91848c;
+  --line:#eadfe3;
+  --danger:#b85d75;
+  --shadow:0 10px 30px rgba(85,50,65,.08);
+  --radius:18px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  color:var(--text);
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background:
+    radial-gradient(circle at 10% 10%,#fff 0,#fffaf8 32%),
+    linear-gradient(135deg,#fffaf8,#fdf2f6);
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+textarea{
+  resize:vertical;
+}
+
+.app{
+  display:flex;
+  min-height:100vh;
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar{
+  width:245px;
+  min-width:245px;
+  height:100vh;
+  position:sticky;
+  top:0;
+  overflow:auto;
+  background:#fff;
+  padding:24px 16px;
+  box-shadow:5px 0 30px rgba(60,35,45,.07);
+  z-index:50;
+}
+
+.brand{
+  font-family:Georgia,serif;
+  font-size:27px;
+  color:#9d5874;
+  margin:5px 8px;
+}
+
+.subtitle{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+  margin:0 8px 22px;
+}
+
+.nav{
+  display:grid;
+  gap:6px;
+}
+
+.nav button{
+  border:0;
+  background:transparent;
+  color:#665d63;
+  text-align:left;
+  padding:12px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.nav button:hover{
+  background:#fff0f5;
+  color:#984d6a;
+  transform:translateX(2px);
+}
+
+.nav button.active{
+  background:var(--pink-light);
+  color:#984d6a;
+  font-weight:600;
+}
+
+.year-box{
+  margin-top:25px;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fffafc;
+}
+
+.year-box label{
+  font-size:10px;
+  color:var(--muted);
+}
+
+.year-box select{
+  width:100%;
+  margin-top:5px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:8px;
+  background:#fff;
+}
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main{
+  flex:1;
+  min-width:0;
+  padding:30px;
+}
+
+.view{
+  display:none;
+  animation:fadeIn .25s ease;
+}
+
+.view.active{
+  display:block;
+}
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+    transform:translateY(5px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:25px;
+  margin-bottom:25px;
+}
+
+.eyebrow{
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:10px;
+  font-weight:bold;
+  color:#b66a84;
+}
+
+.title{
+  font-family:Georgia,serif;
+  font-size:clamp(32px,5vw,52px);
+  margin:6px 0;
+  line-height:1;
+}
+
+.intro{
+  color:var(--muted);
+  max-width:850px;
+  line-height:1.6;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.btn{
+  border:1px solid var(--line);
+  background:#fff;
+  color:#665c62;
+  border-radius:11px;
+  padding:10px 14px;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 5px 15px rgba(70,40,50,.08);
+}
+
+.btn.primary{
+  background:var(--pink-dark);
+  border-color:var(--pink-dark);
+  color:#fff;
+}
+
+.btn.danger{
+  color:var(--danger);
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.card{
+  background:rgba(255,255,255,.96);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+
+.card h2,
+.card h3{
+  font-family:Georgia,serif;
+  font-weight:500;
+  margin:0 0 12px;
+}
+
+.grid{
+  display:grid;
+  gap:16px;
+}
+
+.g2{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.g3{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.g4{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.tiny{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.metric{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.metric strong{
+  font-size:28px;
+}
+
+.input{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:10px;
+  background:#fff;
+  color:var(--text);
+  outline:none;
+  transition:.2s;
+}
+
+.input:focus{
+  border-color:var(--pink);
+  box-shadow:0 0 0 3px rgba(239,171,192,.15);
+}
+
+textarea.input{
+  min-height:130px;
+}
+
+.quote{
+  background:#fff5f8;
+  border-left:4px solid var(--pink);
+  padding:15px;
+  border-radius:10px;
+  font:italic 18px/1.5 Georgia,serif;
+}
+
+.tag{
+  display:inline-block;
+  padding:4px 9px;
+  border-radius:99px;
+  background:#f7e7ec;
+  color:#995b74;
+  font-size:10px;
+}
+
+/* =====================================================
+   MONTH NAV
+===================================================== */
+
+.month-tabs{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-bottom:17px;
+}
+
+.month-tabs button{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  padding:8px 11px;
+  color:#70646b;
+}
+
+.month-tabs button:hover{
+  border-color:var(--pink);
+}
+
+.month-tabs button.active{
+  background:var(--pink-dark);
+  color:#fff;
+  border-color:var(--pink-dark);
+}
+
+/* =====================================================
+   PERIOD NAV
+===================================================== */
+
+.period-nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.period-nav strong{
+  min-width:190px;
+  text-align:center;
+  font-family:Georgia,serif;
+  font-size:20px;
+}
+
+.round-btn{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:1px solid var(--line);
+  background:#fff;
+  color:#765e69;
+}
+
+/* =====================================================
+   BARS
+===================================================== */
+
+.barrow{
+  display:grid;
+  grid-template-columns:170px 1fr 48px;
+  gap:8px;
+  align-items:center;
+  margin:13px 0;
+  font-size:12px;
+}
+
+.bar{
+  height:15px;
+  background:#f1e9ec;
+  border-radius:99px;
+  overflow:hidden;
+}
+
+.bar i{
+  display:block;
+  height:100%;
+  border-radius:99px;
+  background:linear-gradient(90deg,#efabc0,#b96d90);
+  transition:width .3s ease;
+}
+
+/* =====================================================
+   SVG CHARTS
+===================================================== */
+
+.chart{
+  width:100%;
+  min-height:280px;
+}
+
+.chart svg{
+  width:100%;
+  height:280px;
+  overflow:visible;
+}
+
+.chart-grid{
+  stroke:#eee4e8;
+  stroke-width:1;
+}
+
+.chart-line{
+  fill:none;
+  stroke:#b96787;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.chart-area{
+  fill:url(#chartGradient);
+  opacity:.35;
+}
+
+.chart-dot{
+  fill:#fff;
+  stroke:#b96787;
+  stroke-width:3;
+}
+
+.chart-label{
+  fill:#8e8088;
+  font-size:10px;
+}
+
+/* =====================================================
+   HABITS
+===================================================== */
+
+.table-wrap{
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+}
+
+.habit-table{
+  border-collapse:collapse;
+  min-width:950px;
+  width:100%;
+  font-size:11px;
+}
+
+.habit-table th,
+.habit-table td{
+  border-bottom:1px solid #f0e9eb;
+  border-right:1px solid #f0e9eb;
+  padding:5px;
+  text-align:center;
+}
+
+.habit-table th{
+  background:#fff5f8;
+  color:#776b72;
+}
+
+.habit-table th:first-child,
+.habit-table td:first-child{
+  position:sticky;
+  left:0;
+  background:#fff;
+  text-align:left;
+  min-width:180px;
+  z-index:2;
+}
+
+.habit-cell{
+  width:29px;
+  height:29px;
+  border-radius:7px;
+  border:1px solid #e6dade;
+  background:#fff;
+  color:#fff;
+}
+
+.habit-cell.done{
+  background:#d584a0;
+  color:#fff;
+}
+
+.habit-name{
+  min-width:160px;
+}
+
+.habit-summary{
+  color:#9b5972;
+  font-weight:bold;
+}
+
+.habit-actions{
+  display:flex;
+  gap:5px;
+  align-items:center;
+}
+
+/* =====================================================
+   GOALS
+===================================================== */
+
+.goal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:15px;
+  margin-bottom:15px;
+}
+
+.monthly-goals{
+  display:grid;
+  gap:8px;
+}
+
+.goal-item{
+  display:grid;
+  grid-template-columns:30px 1fr 38px;
+  align-items:center;
+  gap:8px;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+}
+
+.goal-check{
+  width:23px;
+  height:23px;
+  border-radius:7px;
+  border:1px solid #d8c5cc;
+  background:#fff;
+  color:#fff;
+}
+
+.goal-check.done{
+  background:#b96d8b;
+  border-color:#b96d8b;
+}
+
+.goal-text{
+  border:0;
+  outline:0;
+  background:transparent;
+  width:100%;
+  color:var(--text);
+}
+
+.goal-text.done{
+  text-decoration:line-through;
+  color:#aaa;
+}
+
+.delete-goal{
+  border:0;
+  background:transparent;
+  color:#c9aab5;
+  cursor:pointer;
+  font-size:18px;
+}
+
+/* =====================================================
+   WEEK
+===================================================== */
+
+.week-summary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+
+.week-goals{
+  display:grid;
+  gap:10px;
+}
+
+.week-goal{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+  align-items:center;
+  padding:13px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+}
+
+.week-goal-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.week-goal-title input{
+  border:0;
+  outline:0;
+  background:transparent;
+  width:100%;
+  color:var(--text);
+}
+
+.week-goal-title input.done{
+  text-decoration:line-through;
+  color:#aaa;
+}
+
+/* calendar */
+
+.week-calendar{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(125px,1fr));
+  gap:8px;
+  overflow-x:auto;
+}
+
+.calendar-day{
+  min-height:220px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+  padding:10px;
+}
+
+.calendar-day.today{
+  border:2px solid var(--pink);
+  background:#fff8fa;
+}
+
+.day-title{
+  font-weight:700;
+  font-size:12px;
+  color:#8e536c;
+  margin-bottom:9px;
+}
+
+.day-date{
+  font-size:10px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.day-task{
+  display:flex;
+  gap:6px;
+  align-items:flex-start;
+  padding:5px 0;
+  border-bottom:1px solid #f3ecee;
+}
+
+.day-task input{
+  accent-color:var(--pink-dark);
+  margin-top:3px;
+}
+
+.day-task span{
+  font-size:11px;
+  line-height:1.3;
+}
+
+.day-task.done span{
+  text-decoration:line-through;
+  color:#aaa;
+}
+
+.add-day-task{
+  margin-top:8px;
+  width:100%;
+  border:1px dashed #d9c4cc;
+  border-radius:8px;
+  background:#fffafc;
+  padding:6px;
+  font-size:10px;
+}
+
+/* =====================================================
+   SKILLS
+===================================================== */
+
+.skill-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.skill{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:14px;
+  padding:15px;
+  text-align:left;
+  color:var(--text);
+  transition:.2s;
+}
+
+.skill:hover{
+  transform:translateY(-2px);
+}
+
+.skill.current{
+  outline:2px solid var(--pink);
+  background:#fff7fa;
+}
+
+.skill-cycle{
+  font-size:10px;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.dot{
+  display:inline-block;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#d47e9b;
+  margin-right:6px;
+}
+
+.skill-score-card{
+  display:grid;
+  grid-template-columns:150px 1fr 45px;
+  align-items:center;
+  gap:10px;
+  margin:12px 0;
+}
+
+.skill-history{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.skill-month{
+  padding:15px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff8fa;
+}
+
+/* =====================================================
+   REVIEWS
+===================================================== */
+
+.review-toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.review-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.review-tabs button.active{
+  background:#a96784;
+  color:#fff;
+}
+
+.review-pane{
+  display:none;
+}
+
+.review-pane.active{
+  display:block;
+}
+
+.review-sheet{
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.98),
+      rgba(255,245,248,.96)
+    );
+  border:1px solid var(--line);
+  border-radius:25px;
+  padding:clamp(20px,4vw,45px);
+  box-shadow:0 15px 50px rgba(80,45,60,.08);
+}
+
+.review-sheet h2{
+  font:500 clamp(28px,4vw,45px) Georgia,serif;
+  margin:7px 0 10px;
+}
+
+.review-box-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+  margin-top:25px;
+}
+
+.review-box{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:15px;
+}
+
+.review-box h3{
+  font:500 18px Georgia,serif;
+  margin:0 0 6px;
+  color:#8f526c;
+}
+
+.review-box textarea{
+  min-height:150px;
+  margin-top:10px;
+}
+
+.review-three{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-top:20px;
+}
+
+/* =====================================================
+   HOME ANALYSIS
+===================================================== */
+
+.analysis-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+}
+
+.analysis-box{
+  padding:15px;
+  background:#fff8fa;
+  border:1px solid var(--line);
+  border-radius:14px;
+}
+
+.analysis-box strong{
+  color:#995873;
+}
+
+.analysis-list{
+  margin:8px 0 0;
+  padding-left:20px;
+}
+
+.analysis-list li{
+  margin:7px 0;
+  line-height:1.5;
+}
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#443a40;
+  color:#fff;
+  padding:11px 15px;
+  border-radius:12px;
+  opacity:0;
+  transform:translateY(10px);
+  transition:.25s;
+  z-index:1000;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer{
+  text-align:center;
+  color:#aaa;
+  font-size:11px;
+  padding:35px 0 10px;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+.mobile-nav{
+  display:none;
+}
+
+@media(max-width:1050px){
+
+  .sidebar{
+    width:80px;
+    min-width:80px;
+  }
+
+  .brand,
+  .subtitle,
+  .year-box{
+    display:none;
+  }
+
+  .nav button{
+    text-align:center;
+    font-size:0;
+  }
+
+  .nav button::first-letter{
+    font-size:20px;
+  }
+
+  .g4,
+  .g3{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .skill-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .week-summary{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+
+  .sidebar{
+    display:none;
+  }
+
+  .main{
+    padding:15px;
+    padding-bottom:80px;
+  }
+
+  .hero{
+    display:block;
+  }
+
+  .actions{
+    margin-top:15px;
+  }
+
+  .g2,
+  .g3,
+  .g4{
+    grid-template-columns:1fr;
+  }
+
+  .skill-grid{
+    grid-template-columns:1fr;
+  }
+
+  .skill-history{
+    grid-template-columns:1fr;
+  }
+
+  .review-box-grid,
+  .review-three,
+  .analysis-grid{
+    grid-template-columns:1fr;
+  }
+
+  .barrow{
+    grid-template-columns:110px 1fr 40px;
+  }
+
+  .period-nav strong{
+    min-width:130px;
+  }
+
+  .mobile-nav{
+    position:fixed;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    bottom:0;
+    left:0;
+    right:0;
+    height:64px;
+    background:rgba(255,255,255,.96);
+    border-top:1px solid var(--line);
+    z-index:900;
+    backdrop-filter:blur(12px);
+  }
+
+  .mobile-nav button{
+    border:0;
+    background:transparent;
+    font-size:9px;
+    color:#776b72;
+  }
+
+  .mobile-nav button.active{
+    color:var(--pink-dark);
+    font-weight:bold;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+  <div class="brand">
+    Mi Vida ✿
+  </div>
+
+  <div class="subtitle">
+    Mi pequeño centro de control
+    para una vida grande.
+  </div>
+
+  <nav class="nav">
+
+    <button data-view="home">
+      🏠 &nbsp; Home anual
+    </button>
+
+    <button data-view="mes">
+      🌙 &nbsp; Mi mes
+    </button>
+
+    <button data-view="habitos">
+      ✓ &nbsp; Hábitos
+    </button>
+
+    <button data-view="semanal">
+      ☷ &nbsp; Semana
+    </button>
+
+    <button data-view="habilidades">
+      ✦ &nbsp; Habilidades
+    </button>
+
+    <button data-view="revisiones">
+      ↻ &nbsp; Revisiones
+    </button>
+
+    <button data-view="datos">
+      ⇅ &nbsp; Datos
+    </button>
+
+  </nav>
+
+  <div class="year-box">
+
+    <label>AÑO</label>
+
+    <select id="yearSelect"></select>
+
+  </div>
+
+</aside>
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+<!-- =====================================================
+     HOME
+===================================================== -->
+
+<section id="home" class="view">
+
+  <div class="hero">
+
+    <div>
+
+      <div class="eyebrow">
+        HOME · ANÁLISIS ANUAL
+      </div>
+
+      <h1 class="title">
+        Mi año, visto desde arriba.
+      </h1>
+
+      <p class="intro">
+        Aquí no solo se muestran números:
+        se buscan patrones entre tus hábitos,
+        metas, bienestar y evolución.
+      </p>
+
+    </div>
+
+    <div class="actions">
+
+      <button class="btn primary" id="homeMonthBtn">
+        Entrar al mes →
+      </button>
+
+      <button class="btn" id="homeExportBtn">
+        Exportar respaldo
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="grid g4" id="homeMetrics"></div>
+
+  <div class="grid g2" style="margin-top:16px">
+
+    <div class="card">
+
+      <h2>
+        Evolución de mi año
+      </h2>
+
+      <p class="tiny">
+        Promedio de energía + estado emocional
+        + bienestar por mes.
+      </p>
+
+      <div class="chart" id="annualLineChart"></div>
+
+    </div>
+
+    <div class="card">
+
+      <h2>
+        Constancia de hábitos
+      </h2>
+
+      <p class="tiny">
+        Porcentaje de cumplimiento registrado
+        en cada mes.
+      </p>
+
+      <div class="chart" id="habitLineChart"></div>
+
+    </div>
+
+  </div>
+
+  <div class="grid g2" style="margin-top:16px">
+
+    <div class="card">
+
+      <h2>
+        Tu año en una mirada
+      </h2>
+
+      <div id="annualBars"></div>
+
+    </div>
+
+    <div class="card">
+
+      <h2>
+        Palabras de mi año
+      </h2>
+
+      <div
+        id="wordCloud"
+        style="display:flex;flex-wrap:wrap;gap:8px">
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:16px">
+
+    <h2>
+      Análisis riguroso de mis datos
+    </h2>
+
+    <div id="annualAnalysis"></div>
+
+  </div>
+
+  <div class="card" style="margin-top:16px">
+
+    <h2>
+      Últimas reflexiones
+    </h2>
+
+    <div id="homeReflections"></div>
+
+  </div>
+
+</section>
+
+<!-- =====================================================
+     MES
+===================================================== -->
+
+<section id="mes" class="view">
+
+  <div class="hero">
+
+    <div>
+
+      <div class="eyebrow">
+        BITÁCORA MENSUAL
+      </div>
+
+      <h1 class="title" id="monthTitle"></h1>
+
+      <p class="intro">
+        Mantra, palabra del mes,
+        bienestar, metas e intención.
+      </p>
+
+    </div>
+
+    <div class="actions">
+
+      <button class="btn" id="randomWordBtn">
+        🎡 Nueva palabra
+      </button>
+
+      <button class="btn" id="wheelBtn">
+        Abrir mi ruleta ↗
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="month-tabs" id="monthTabs"></div>
+
+  <div class="grid g2">
+
+    <div class="card">
+
+      <h2>Mantra del mes</h2>
+
+      <input
+        id="mantra"
+        class="input"
+        placeholder="Escribe aquí tu mantra…">
+
+      <p class="tiny">
+        Una frase que quieras recordar
+        cuando todo se mueva.
+      </p>
+
+    </div>
+
+    <div class="card">
+
+      <h2>
+        Palabra del mes
+        <span class="tag">RULETA</span>
+      </h2>
+
+      <input
+        id="word"
+        class="input"
+        placeholder="La palabra que salió…">
+
+    </div>
+
+  </div>
+
+  <div style="margin-top:25px">
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px">
+
+      <h2 style="font:25px Georgia,serif">
+        ¿Cómo estoy?
+      </h2>
+
+      <span class="tiny">
+        1 = muy bajo · 10 = excelente
+      </span>
+
+    </div>
+
+  </div>
+
+  <div class="card">
+    <div id="monthlySliders"></div>
+  </div>
+
+  <div class="grid g2" style="margin-top:16px">
+
+    <div class="card">
+
+      <div class="goal-header">
+
+        <div>
+
+          <h2>Metas del mes</h2>
+
+          <p class="tiny">
+            Convierte tus intenciones
+            en acciones concretas.
+          </p>
+
+        </div>
+
+        <button
+          class="btn primary"
+          id="addMonthlyGoalBtn">
+          ＋ Nueva meta
+        </button>
+
+      </div>
+
+      <div id="monthlyGoals" class="monthly-goals"></div>
+
+      <div id="goalProgress" style="margin-top:15px"></div>
+
+    </div>
+
+    <div class="card">
+
+      <h2>
+        Lo que quiero recordar
+      </h2>
+
+      <textarea
+        id="remember"
+        class="input"
+        placeholder="Una idea, aprendizaje,
+promesa o frase…"></textarea>
+
+    </div>
+
+  </div>
+
+  <div style="margin-top:25px">
+
+    <h2 style="font:25px Georgia,serif">
+      Reflexión al final del mes
+    </h2>
+
+  </div>
+
+  <div class="card">
+
+    <textarea
+      id="reflection"
+      class="input"
+      style="min-height:220px"
+      placeholder="¿Qué salió bien?
+
+¿Qué me dolió?
+
+¿Qué aprendí?
+
+¿Qué voy a soltar?
+
+¿Qué voy a repetir?
+
+¿Qué necesito el próximo mes?"></textarea>
+
+  </div>
+
+</section>
+
+<!-- =====================================================
+     HABITOS
+===================================================== -->
+
+<section id="habitos" class="view">
+
+  <div class="hero">
+
+    <div>
+
+      <div class="eyebrow">
+        SEGUIMIENTO DIARIO
+      </div>
+
+      <h1 class="title">
+        Mis hábitos
+      </h1>
+
+      <p class="intro">
+        Agrega los hábitos que quieres construir
+        y marca cada día que los completes.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="month-tabs" id="habitMonthTabs"></div>
+
+  <div class="grid g3" id="habitStats"></div>
+
+  <div class="card" style="margin-top:16px">
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px">
+
+      <div>
+
+        <h2>
+          Lista de hábitos
+        </h2>
+
+        <p class="tiny">
+          Puedes editar los nombres directamente.
+        </p>
+
+      </div>
+
+      <button class="btn primary" id="addHabitBtn">
+        ＋ Agregar hábito
+      </button>
+
+    </div>
+
+    <div
+      class="table-wrap"
+      style="margin-top:12px">
+
+      <table
+        class="habit-table"
+        id="habitTable">
+      </table>
+
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:16px">
+
+    <h2>
+      Mi línea de constancia
+    </h2>
+
+    <p class="tiny">
+      Una sola línea muestra cómo evoluciona
+      tu porcentaje de hábitos completados
+      durante el mes.
+    </p>
+
+    <div class="chart" id="habitMonthChart"></div>
+
+  </div>
+
+  <div class="card" style="margin-top:16px">
+
+    <h2>
+      Rendimiento por hábito
+    </h2>
+
+    <div id="habitBars"></div>
+
+  </div>
+
+</section>
+
+<!-- =====================================================
+     SEMANA
+===================================================== -->
+
+<section id="semanal" class="view">
+
+  <div class="hero">
+
+    <div>
+
+      <div class="eyebrow">
+        ORGANIZACIÓN SEMANAL
+      </div>
+
+      <h1 class="title">
+        Mi semana
+      </h1>
+
+      <p class="intro">
+        Las metas y el calendario están separados.
+        Cada semana queda guardada como historial.
+      </p>
+
+    </div>
+
+    <button class="btn primary" id="addWeeklyGoalBtn">
+      ＋ Nueva meta
+    </button>
+
+  </div>
+
+  <div class="period-nav">
+
+    <button class="round-btn" id="prevWeek">
+      ‹
+    </button>
+
+    <strong id="weekTitle"></strong>
+
+    <button class="round-btn" id="nextWeek">
+      ›
+    </button>
+
+  </div>
+
+  <!-- DATOS DE SEMANA -->
+
+  <div class="card">
+
+    <div class="week-summary">
+
+      <div>
+
+        <label class="tiny">
+          Nombre de la semana
+        </label>
+
+        <input
+          id="weekLabel"
+          class="input"
+          placeholder="Ej. Semana de enfoque">
+
+      </div>
+
+      <div>
+
+        <label class="tiny">
+          Objetivo principal
+        </label>
+
+        <input
+          id="weekFocus"
+          class="input"
+          placeholder="Lo más importante…">
+
+      </div>
+
+      <div>
+
+        <label class="tiny">
+          Intención
+        </label>
+
+        <input
+          id="weekIntent"
+          class="input"
+          placeholder="¿Cómo quiero vivirla?">
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- METAS SEPARADAS -->
+
+  <div class="card" style="margin-top:16px">
+
+    <h2>
+      Metas de esta semana
+    </h2>
+
+    <p class="tiny">
+      Estas son las metas generales.
+      No sustituyen el checklist diario.
+    </p>
+
+    <div id="weeklyGoals" class="week-goals"></div>
+
+    <div id="weekProgress" style="margin-top:18px"></div>
+
+  </div>
+
+  <!-- CALENDARIO SEPARADO -->
+
+  <div class="card" style="margin-top:16px">
+
+    <h2>
+      Calendario semanal
+    </h2>
+
+    <p class="tiny">
+      Dentro de cada día puedes escribir tareas
+      y marcarlas cuando las completes.
+    </p>
+
+    <div
+      id="weekCalendar"
+      class="week-calendar">
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:16px">
+
+    <h2>
+      Cierre de semana
+    </h2>
+
+    <textarea
+      id="weekReview"
+      class="input"
+      placeholder="¿Qué hice?
+
+¿Qué no hice?
+
+¿Por qué?
+
+¿Qué aprendí?
+
+¿Qué voy a ajustar?"></textarea>
+
+  </div>
+
+</section>
+
+<!-- =====================================================
+     HABILIDADES
+===================================================== -->
+
+<section id="habilidades" class="view">
+
+  <div class="hero">
+
+    <div>
+
+      <div class="eyebrow">
+        DESARROLLO PERSONAL
+      </div>
+
+      <h1 class="title">
+        Mis habilidades
+      </h1>
+
+      <p class="intro">
+        Cada habilidad dura dos meses.
+        Puedes evaluarla del 1 al 10
+        al terminar cada mes.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>
+      Ciclos de dos meses
+    </h2>
+
+    <div id="skillGrid" class="skill-grid"></div>
+
+  </div>
+
+  <div class="grid g2" style="margin-top:16px">
+
+    <div class="card">
+
+      <h2 id="skillCurrentTitle"></h2>
+
+      <p class="tiny" id="skillCycleDescription"></p>
+
+      <div class="skill-history" id="skillHistory"></div>
+
+    </div>
+
+    <div class="card">
+
+      <h2>
+        Reflexión de esta habilidad
+      </h2>
+
+      <textarea
+        id="skillReflection"
+        class="input"
+        style="min-height:250px"
+        placeholder="¿Cómo se manifestó esta habilidad?
+
+¿Qué hice mejor?
+
+¿Qué me falta practicar?
+
+¿Qué quiero probar?
+
+¿Qué aprendí de mí?"></textarea>
+
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:16px">
+
+    <h2>
+      Evolución de la habilidad
+    </h2>
+
+    <div class="chart" id="skillChart"></div>
+
+  </div>
+
+</section>
+
+<!-- =====================================================
+     REVISIONES
+===================================================== -->
+
+<section id="revisiones" class="view">
+
+  <div class="hero">
+
+    <div>
+
+      <div class="eyebrow">
+        RITUALES DE PERSPECTIVA
+      </div>
+
+      <h1 class="title">
+        Revisiones
+      </h1>
+
+      <p class="intro">
+        Escribe directamente en cada recuadro.
+        Las revisiones quedan guardadas por período.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="review-tabs">
+
+    <button class="btn active" data-review="monthly">
+      Mensual
+    </button>
+
+    <button class="btn" data-review="weekly">
+      Semanal
+    </button>
+
+    <button class="btn" data-review="quarterly">
+      Trimestral
+    </button>
+
+    <button class="btn" data-review="annual">
+      Anual
+    </button>
+
+  </div>
+
+  <div
+    id="review-monthly"
+    class="review-pane active">
+  </div>
+
+  <div
+    id="review-weekly"
+    class="review-pane">
+  </div>
+
+  <div
+    id="review-quarterly"
+    class="review-pane">
+  </div>
+
+  <div
+    id="review-annual"
+    class="review-pane">
+  </div>
+
+</section>
+
+<!-- =====================================================
+     DATOS
+===================================================== -->
+
+<section id="datos" class="view">
+
+  <div class="hero">
+
+    <div>
+
+      <div class="eyebrow">
+        TU INFORMACIÓN
+      </div>
+
+      <h1 class="title">
+        Datos & respaldo
+      </h1>
+
+      <p class="intro">
+        Todo se guarda localmente en este navegador.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="grid g2">
+
+    <div class="card">
+
+      <h2>
+        Guardar copia
+      </h2>
+
+      <p class="tiny">
+        Descarga todos tus datos.
+      </p>
+
+      <button class="btn primary" id="exportBtn">
+        ⇩ Exportar JSON
+      </button>
+
+    </div>
+
+    <div class="card">
+
+      <h2>
+        Restaurar copia
+      </h2>
+
+      <p class="tiny">
+        Carga un respaldo anterior.
+      </p>
+
+      <input
+        type="file"
+        id="importFile"
+        accept="application/json"
+        class="input">
+
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:16px">
+
+    <h2>
+      Privacidad
+    </h2>
+
+    <p class="intro">
+      Esta aplicación funciona sin servidor.
+      Tus datos permanecen en el navegador
+      mediante localStorage.
+    </p>
+
+  </div>
+
+</section>
+
+<div class="footer">
+  Hecho para volver a ti,
+  no para exigirte más. ✿
+</div>
+
+</main>
+</div>
+
+<!-- =====================================================
+     MOBILE NAV
+===================================================== -->
+
+<nav class="mobile-nav">
+
+  <button data-mobile-view="home">
+    🏠<br>Inicio
+  </button>
+
+  <button data-mobile-view="mes">
+    🌙<br>Mes
+  </button>
+
+  <button data-mobile-view="habitos">
+    ✓<br>Hábitos
+  </button>
+
+  <button data-mobile-view="semanal">
+    ☷<br>Semana
+  </button>
+
+  <button data-mobile-view="revisiones">
+    ↻<br>Revisar
+  </button>
+
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<script>
+
+/* =========================================================
+   CONFIGURACIÓN
+========================================================= */
+
+const MONTHS=[
+  "Enero","Febrero","Marzo","Abril",
+  "Mayo","Junio","Julio","Agosto",
+  "Septiembre","Octubre","Noviembre","Diciembre"
+];
+
+const DAYS=[
+  "Lunes","Martes","Miércoles",
+  "Jueves","Viernes","Sábado","Domingo"
+];
+
+const SHORT_DAYS=[
+  "Lun","Mar","Mié","Jue","Vie","Sáb","Dom"
+];
+
+const SKILLS=[
+  "Habilidades sociales",
+  "Desarrollo profesional",
+  "Inteligencia emocional",
+  "Salud y bienestar",
+  "Gestión del tiempo",
+  "Finanzas personales"
+];
+
+const DIMENSIONS=[
+  "Claridad",
+  "Práctica",
+  "Confianza",
+  "Constancia"
+];
+
+const WORDS=[
+  "presencia",
+  "valentía",
+  "calma",
+  "disciplina",
+  "juego",
+  "expansión",
+  "paciencia",
+  "curiosidad",
+  "ligereza",
+  "foco",
+  "ternura",
+  "orden",
+  "audacia",
+  "raíces",
+  "movimiento",
+  "confianza",
+  "crecimiento",
+  "libertad",
+  "intención",
+  "equilibrio"
+];
+
+const HABIT_DEFAULT=[
+  "Agua",
+  "Movimiento",
+  "Dormir bien",
+  "Leer / aprender",
+  "Orden",
+  "Cuidado personal"
+];
+
+const STORAGE_KEY="MI_VIDA_DASHBOARD_V3";
+
+let currentMonth=new Date().getMonth();
+let currentSkill=Math.floor(currentMonth/2);
+let currentWeekOffset=0;
+let currentReviewMonth=currentMonth;
+let currentQuarter=Math.floor(currentMonth/3)+1;
+
+let data=loadData();
+
+/* =========================================================
+   DATOS
+========================================================= */
+
+function blankMonth(){
+
+  return{
+    mantra:"",
+    word:"",
+    goals:[],
+    remember:"",
+    reflection:"",
+    metrics:{
+      energia:5,
+      emocion:5,
+      bienestar:5
+    },
+    habits:[...HABIT_DEFAULT],
+    checks:{}
+  };
+
+}
+
+function blankWeek(){
+
+  return{
+    label:"",
+    focus:"",
+    intent:"",
+    goals:[],
+    days:{
+      0:[],
+      1:[],
+      2:[],
+      3:[],
+      4:[],
+      5:[],
+      6:[]
+    },
+    review:""
+  };
+
+}
+
+function blankSkill(){
+
+  return{
+    months:[
+      {
+        score:5,
+        reflection:""
+      },
+      {
+        score:5,
+        reflection:""
+      }
+    ],
+    reflection:""
+  };
+
+}
+
+function createBlankData(){
+
+  const months={};
+
+  for(let i=0;i<12;i++){
+    months[i]=blankMonth();
+  }
+
+  const skills=SKILLS.map(
+    ()=>blankSkill()
+  );
+
+  return{
+    year:new Date().getFullYear(),
+    months,
+    weeks:{},
+    skills,
+    reviews:{
+      monthly:{},
+      weekly:{},
+      quarterly:{},
+      annual:""
+    }
+  };
+
+}
+
+/* =========================================================
+   LOAD
+========================================================= */
+
+function loadData(){
+
+  try{
+
+    const saved=
+      localStorage.getItem(STORAGE_KEY);
+
+    if(saved){
+      const parsed=JSON.parse(saved);
+      return migrateData(parsed);
+    }
+
+  }catch(error){
+    console.error(error);
+  }
+
+  return createBlankData();
+
+}
+
+/* =========================================================
+   MIGRATION
+========================================================= */
+
+function migrateData(raw){
+
+  const base=createBlankData();
+
+  const result={
+    ...base,
+    ...raw
+  };
+
+  result.months={
+    ...base.months,
+    ...(raw.months||{})
+  };
+
+  for(let i=0;i<12;i++){
+
+    result.months[i]={
+      ...blankMonth(),
+      ...(result.months[i]||{})
+    };
+
+    if(!Array.isArray(result.months[i].goals)){
+      result.months[i].goals=[];
+    }
+
+    if(!Array.isArray(result.months[i].habits)){
+      result.months[i].habits=[...HABIT_DEFAULT];
+    }
+
+    if(!result.months[i].checks){
+      result.months[i].checks={};
+    }
+
+    result.months[i].metrics={
+      ...blankMonth().metrics,
+      ...(result.months[i].metrics||{})
+    };
+
+  }
+
+  if(!result.weeks){
+    result.weeks={};
+  }
+
+  /*
+    Convertimos la antigua semana única,
+    si existía, en la semana actual.
+  */
+
+  if(raw.weekly){
+
+    const key=getWeekKey(
+      new Date()
+    );
+
+    result.weeks[key]={
+      ...blankWeek(),
+      label:raw.weekly.label||"",
+      focus:raw.weekly.focus||"",
+      intent:raw.weekly.intent||"",
+      goals:Array.isArray(raw.weekly.goals)
+        ?raw.weekly.goals
+        :[],
+      review:raw.weekly.review||""
+    };
+
+  }
+
+  if(!Array.isArray(result.skills)){
+    result.skills=[];
+  }
+
+  result.skills=
+    SKILLS.map(
+      (_,i)=>{
+        return{
+          ...blankSkill(),
+          ...(result.skills[i]||{})
+        };
+      }
+    );
+
+  if(!result.reviews){
+    result.reviews=base.reviews;
+  }
+
+  result.reviews={
+    ...base.reviews,
+    ...result.reviews
+  };
+
+  return result;
+
+}
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+function saveQuiet(){
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(data)
+  );
+
+}
+
+function save(){
+
+  saveQuiet();
+
+  toast("Guardado ✓");
+
+}
+
+function toast(message){
+
+  const el=document.getElementById("toast");
+
+  el.textContent=message;
+
+  el.classList.add("show");
+
+  setTimeout(
+    ()=>{
+      el.classList.remove("show");
+    },
+    1400
+  );
+
+}
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+function escapeHTML(value){
+
+  return String(value??"")
+    .replace(
+      /[&<>"']/g,
+      c=>({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[c])
+    );
+
+}
+
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
+
+function go(view){
+
+  const target=document.getElementById(view);
+
+  if(!target)return;
+
+  document
+    .querySelectorAll(".view")
+    .forEach(el=>{
+      el.classList.remove("active");
+    });
+
+  target.classList.add("active");
+
+  document
+    .querySelectorAll(".nav button[data-view]")
+    .forEach(btn=>{
+      btn.classList.toggle(
+        "active",
+        btn.dataset.view===view
+      );
+    });
+
+  document
+    .querySelectorAll(".mobile-nav button")
+    .forEach(btn=>{
+      btn.classList.toggle(
+        "active",
+        btn.dataset.mobileView===view
+      );
+    });
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+  if(view==="home")renderHome();
+  if(view==="mes")renderMonth();
+  if(view==="habitos")renderHabits();
+  if(view==="semanal")renderWeek();
+  if(view==="habilidades")renderSkills();
+  if(view==="revisiones")renderReviews();
+
+}
+
+document
+  .querySelectorAll(".nav button[data-view]")
+  .forEach(btn=>{
+    btn.addEventListener(
+      "click",
+      ()=>go(btn.dataset.view)
+    );
+  });
+
+document
+  .querySelectorAll(".mobile-nav button")
+  .forEach(btn=>{
+    btn.addEventListener(
+      "click",
+      ()=>go(btn.dataset.mobileView)
+    );
+  });
+
+/* =========================================================
+   AÑO
+========================================================= */
+
+function initYear(){
+
+  const select=document.getElementById("yearSelect");
+
+  select.innerHTML="";
+
+  for(
+    let y=data.year-2;
+    y<=data.year+2;
+    y++
+  ){
+
+    const option=document.createElement("option");
+
+    option.value=y;
+    option.textContent=y;
+
+    select.appendChild(option);
+
+  }
+
+  select.value=data.year;
+
+  select.onchange=()=>{
+
+    data.year=Number(select.value);
+
+    save();
+
+    renderHome();
+    renderMonth();
+    renderHabits();
+    renderWeek();
+
+  };
+
+}
+
+/* =========================================================
+   MONTH TABS
+========================================================= */
+
+function renderMonthTabs(id,callback){
+
+  const container=document.getElementById(id);
+
+  container.innerHTML=
+    MONTHS.map(
+      (month,i)=>`
+        <button
+          type="button"
+          class="${i===currentMonth?"active":""}"
+          data-month="${i}">
+          ${month.slice(0,3)}
+        </button>
+      `
+    ).join("");
+
+  container
+    .querySelectorAll("[data-month]")
+    .forEach(btn=>{
+      btn.addEventListener(
+        "click",
+        ()=>{
+          currentMonth=
+            Number(btn.dataset.month);
+
+          callback();
+        }
+      );
+    });
+
+}
+
+/* =========================================================
+   MES
+========================================================= */
+
+function renderMonth(){
+
+  renderMonthTabs(
+    "monthTabs",
+    renderMonth
+  );
+
+  const month=data.months[currentMonth];
+
+  document.getElementById("monthTitle")
+    .textContent=
+      `${MONTHS[currentMonth]} ${data.year}`;
+
+  document.getElementById("mantra").value=
+    month.mantra||"";
+
+  document.getElementById("word").value=
+    month.word||"";
+
+  document.getElementById("remember").value=
+    month.remember||"";
+
+  document.getElementById("reflection").value=
+    month.reflection||"";
+
+  const metrics=[
+    ["energia","⚡ Energía"],
+    ["emocion","♡ Estado emocional"],
+    ["bienestar","✿ Bienestar / autocuidado"]
+  ];
+
+  document.getElementById("monthlySliders").innerHTML=
+    metrics.map(
+      ([key,label])=>`
+
+        <div class="barrow">
+
+          <b>${label}</b>
+
+          <input
+            type="range"
+            min="1"
+            max="10"
+            value="${month.metrics[key]}"
+            data-month-metric="${key}">
+
+          <b data-month-metric-value="${key}">
+            ${month.metrics[key]}
+          </b>
+
+        </div>
+
+      `
+    ).join("");
+
+  document
+    .querySelectorAll("[data-month-metric]")
+    .forEach(input=>{
+      input.addEventListener(
+        "input",
+        ()=>{
+          const key=input.dataset.monthMetric;
+
+          month.metrics[key]=
+            Number(input.value);
+
+          document
+            .querySelector(
+              `[data-month-metric-value="${key}"]`
+            )
+            .textContent=input.value;
+
+          saveQuiet();
+
+          renderHome();
+        }
+      );
+    });
+
+  renderMonthlyGoals();
+
+}
+
+/* =========================================================
+   MONTH INPUTS
+========================================================= */
+
+function setupMonthInputs(){
+
+  ["mantra","word","remember","reflection"]
+    .forEach(id=>{
+
+      document.getElementById(id)
+        .addEventListener(
+          "input",
+          e=>{
+            data.months[currentMonth][id]=
+              e.target.value;
+
+            saveQuiet();
+          }
+        );
+
+    });
+
+}
+
+/* =========================================================
+   RULETA
+========================================================= */
+
+function randomWord(){
+
+  const word=
+    WORDS[
+      Math.floor(
+        Math.random()*WORDS.length
+      )
+    ];
+
+  data.months[currentMonth].word=word;
+
+  document.getElementById("word").value=word;
+
+  save();
+
+}
+
+/* =========================================================
+   MONTHLY GOALS
+========================================================= */
+
+function renderMonthlyGoals(){
+
+  const goals=data.months[currentMonth].goals;
+
+  const container=
+    document.getElementById("monthlyGoals");
+
+  if(!goals.length){
+
+    container.innerHTML=`
+      <div class="tiny"
+        style="
+          padding:20px;
+          text-align:center;
+          border:1px dashed var(--line);
+          border-radius:12px">
+        Todavía no hay metas.
+        <br>
+        Agrega la primera cuando estés lista ✿
+      </div>
+    `;
+
+  }else{
+
+    container.innerHTML=
+      goals.map(
+        (goal,i)=>`
+
+          <div class="goal-item">
+
+            <button
+              class="goal-check ${goal.done?"done":""}"
+              data-goal-check="${i}">
+              ${goal.done?"✓":""}
+            </button>
+
+            <input
+              class="goal-text ${goal.done?"done":""}"
+              value="${escapeHTML(goal.text)}"
+              placeholder="Escribe una meta…"
+              data-goal-input="${i}">
+
+            <button
+              class="delete-goal"
+              data-goal-delete="${i}">
+              ×
+            </button>
+
+          </div>
+
+        `
+      ).join("");
+
+  }
+
+  container
+    .querySelectorAll("[data-goal-check]")
+    .forEach(btn=>{
+      btn.addEventListener(
+        "click",
+        ()=>{
+          const i=Number(btn.dataset.goalCheck);
+
+          goals[i].done=!goals[i].done;
+
+          saveQuiet();
+
+          renderMonthlyGoals();
+          renderHome();
+        }
+      );
+    });
+
+  container
+    .querySelectorAll("[data-goal-input]")
+    .forEach(input=>{
+      input.addEventListener(
+        "input",
+        ()=>{
+          goals[
+            Number(input.dataset.goalInput)
+          ].text=input.value;
+
+          saveQuiet();
+        }
+      );
+    });
+
+  container
+    .querySelectorAll("[data-goal-delete]")
+    .forEach(btn=>{
+      btn.addEventListener(
+        "click",
+        ()=>{
+          goals.splice(
+            Number(btn.dataset.goalDelete),
+            1
+          );
+
+          saveQuiet();
+
+          renderMonthlyGoals();
+          renderHome();
+        }
+      );
+    });
+
+  const total=goals.length;
+
+  const done=
+    goals.filter(g=>g.done).length;
+
+  const pct=
+    total
+      ?Math.round(done/total*100)
+      :0;
+
+  document.getElementById("goalProgress").innerHTML=`
+
+    <div class="metric">
+      <span class="tiny">
+        Progreso
+      </span>
+
+      <strong>
+        ${done}/${total} · ${pct}%
+      </strong>
+    </div>
+
+    <div class="bar" style="margin-top:7px">
+      <i style="width:${pct}%"></i>
+    </div>
+
+  `;
+
+}
+
+function addMonthlyGoal(){
+
+  data.months[currentMonth].goals.push({
+    text:"Nueva meta",
+    done:false
+  });
+
+  saveQuiet();
+
+  renderMonthlyGoals();
+
+}
+
+/* =========================================================
+   HABITS
+========================================================= */
+
+function daysInMonth(month){
+
+  return new Date(
+    data.year,
+    month+1,
+    0
+  ).getDate();
+
+}
+
+function habitPercentage(month){
+
+  const days=daysInMonth(month);
+
+  const m=data.months[month];
+
+  if(!m.habits.length)return 0;
+
+  let done=0;
+
+  m.habits.forEach(
+    (_,i)=>{
+      for(let d=1;d<=days;d++){
+
+        if(m.checks[`${i}-${d}`]){
+          done++;
+        }
+
+      }
+    }
+  );
+
+  const total=
+    m.habits.length*days;
+
+  return total
+    ?Math.round(done/total*100)
+    :0;
+
+}
+
+function renderHabits(){
+
+  renderMonthTabs(
+    "habitMonthTabs",
+    renderHabits
+  );
+
+  const month=data.months[currentMonth];
+
+  const days=daysInMonth(currentMonth);
+
+  let header=`
+    <tr>
+      <th>Hábito</th>
+  `;
+
+  for(let d=1;d<=days;d++){
+    header+=`<th>${d}</th>`;
+  }
+
+  header+=`<th>Éxito</th></tr>`;
+
+  let rows="";
+
+  month.habits.forEach(
+    (habit,index)=>{
+
+      let completed=0;
+      let cells="";
+
+      for(let day=1;day<=days;day++){
+
+        const key=`${index}-${day}`;
+
+        const checked=
+          !!month.checks[key];
+
+        if(checked)completed++;
+
+        cells+=`
+
+          <td>
+
+            <button
+              class="
+                habit-cell
+                ${checked?"done":""}
+              "
+              data-habit-index="${index}"
+              data-habit-day="${day}">
+              ${checked?"✓":""}
+            </button>
+
+          </td>
+
+        `;
+
+      }
+
+      const pct=
+        Math.round(
+          completed/days*100
+        );
+
+      rows+=`
+
+        <tr>
+
+          <td>
+
+            <input
+              class="input habit-name"
+              value="${escapeHTML(habit)}"
+              data-habit-name="${index}">
+
+          </td>
+
+          ${cells}
+
+          <td class="habit-summary">
+            ${pct}%
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+  document.getElementById("habitTable")
+    .innerHTML=
+      header+rows;
+
+  document
+    .querySelectorAll("[data-habit-index]")
+    .forEach(btn=>{
+      btn.addEventListener(
+        "click",
+        ()=>{
+          toggleHabit(
+            Number(btn.dataset.habitIndex),
+            Number(btn.dataset.habitDay)
+          );
+        }
+      );
+    });
+
+  document
+    .querySelectorAll("[data-habit-name]")
+    .forEach(input=>{
+      input.addEventListener(
+        "input",
+        ()=>{
+          month.habits[
+            Number(input.dataset.habitName)
+          ]=input.value;
+
+          saveQuiet();
+        }
+      );
+    });
+
+  const total=
+    month.habits.length*days;
+
+  let completed=0;
+
+  Object.values(month.checks)
+    .forEach(v=>{
+      if(v)completed++;
+    });
+
+  const consistency=
+    total
+      ?Math.round(completed/total*100)
+      :0;
+
+  document.getElementById("habitStats").innerHTML=`
+
+    <div class="card">
+      <div class="tiny">Hábitos</div>
+      <strong style="font-size:28px">
+        ${month.habits.length}
+      </strong>
+    </div>
+
+    <div class="card">
+      <div class="tiny">Días marcados</div>
+      <strong style="font-size:28px">
+        ${completed}
+      </strong>
+    </div>
+
+    <div class="card">
+      <div class="tiny">Constancia</div>
+      <strong style="font-size:28px">
+        ${consistency}%
+      </strong>
+    </div>
+
+  `;
+
+  renderHabitBars();
+  renderHabitMonthChart();
+
+}
+
+function toggleHabit(index,day){
+
+  const month=data.months[currentMonth];
+
+  const key=`${index}-${day}`;
+
+  month.checks[key]=
+    !month.checks[key];
+
+  saveQuiet();
+
+  renderHabits();
+  renderHome();
+
+}
+
+function addHabit(){
+
+  const name=
+    prompt(
+      "Nombre del nuevo hábito:"
+    );
+
+  if(!name)return;
+
+  data.months[currentMonth]
+    .habits.push(name.trim());
+
+  save();
+
+  renderHabits();
+
+}
+
+function renderHabitBars(){
+
+  const month=data.months[currentMonth];
+
+  const days=daysInMonth(currentMonth);
+
+  document.getElementById("habitBars").innerHTML=
+    month.habits.map(
+      (habit,index)=>{
+
+        let done=0;
+
+        for(let d=1;d<=days;d++){
+
+          if(
+            month.checks[
+              `${index}-${d}`
+            ]
+          ){
+            done++;
+          }
+
+        }
+
+        const pct=
+          Math.round(done/days*100);
+
+        return`
+
+          <div class="barrow">
+
+            <b>
+              ${escapeHTML(habit)}
+            </b>
+
+            <div class="bar">
+              <i style="width:${pct}%"></i>
+            </div>
+
+            <b>${pct}%</b>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+/* =========================================================
+   GENERIC SVG LINE CHART
+========================================================= */
+
+function lineChart(
+  values,
+  labels,
+  maxValue=10
+){
+
+  const width=700;
+  const height=270;
+
+  const pad={
+    left:42,
+    right:20,
+    top:20,
+    bottom:35
+  };
+
+  const chartW=
+    width-pad.left-pad.right;
+
+  const chartH=
+    height-pad.top-pad.bottom;
+
+  const valid=values.filter(
+    v=>typeof v==="number"
+  );
+
+  const safeMax=
+    maxValue||Math.max(...valid,10);
+
+  const points=
+    values.map(
+      (value,i)=>{
+
+        const x=
+          pad.left+
+          (
+            labels.length===1
+              ?chartW/2
+              :i/(labels.length-1)*chartW
+          );
+
+        const numeric=
+          typeof value==="number"
+            ?value
+            :0;
+
+        const y=
+          pad.top+
+          chartH-
+          numeric/safeMax*chartH;
+
+        return[x,y,numeric];
+
+      }
+    );
+
+  const line=
+    points
+      .map(
+        (p,i)=>
+          `${i===0?"M":"L"} ${p[0]} ${p[1]}`
+      )
+      .join(" ");
+
+  const area=
+    `${line}
+      L ${points[points.length-1][0]} ${pad.top+chartH}
+      L ${points[0][0]} ${pad.top+chartH}
+      Z`;
+
+  let grid="";
+
+  [0,25,50,75,100].forEach(percent=>{
+
+    const y=
+      pad.top+
+      chartH-
+      percent/100*chartH;
+
+    const value=
+      safeMax*percent/100;
+
+    grid+=`
+
+      <line
+        x1="${pad.left}"
+        y1="${y}"
+        x2="${width-pad.right}"
+        y2="${y}"
+        class="chart-grid">
+      </line>
+
+      <text
+        x="${pad.left-8}"
+        y="${y+4}"
+        text-anchor="end"
+        class="chart-label">
+        ${Math.round(value)}
+      </text>
+
+    `;
+
+  });
+
+  let dots="";
+
+  points.forEach(
+    (p,i)=>{
+
+      dots+=`
+
+        <circle
+          cx="${p[0]}"
+          cy="${p[1]}"
+          r="4"
+          class="chart-dot">
+        </circle>
+
+        <text
+          x="${p[0]}"
+          y="${height-10}"
+          text-anchor="middle"
+          class="chart-label">
+          ${labels[i]}
+        </text>
+
+      `;
+
+    }
+  );
+
+  return`
+
+    <svg
+      viewBox="0 0 ${width} ${height}"
+      preserveAspectRatio="none">
+
+      <defs>
+
+        <linearGradient
+          id="chartGradient"
+          x1="0"
+          x2="0"
+          y1="0"
+          y2="1">
+
+          <stop
+            offset="0%"
+            stop-color="#efabc0">
+          </stop>
+
+          <stop
+            offset="100%"
+            stop-color="#efabc0"
+            stop-opacity="0">
+          </stop>
+
+        </linearGradient>
+
+      </defs>
+
+      ${grid}
+
+      <path
+        d="${area}"
+        class="chart-area">
+      </path>
+
+      <path
+        d="${line}"
+        class="chart-line">
+      </path>
+
+      ${dots}
+
+    </svg>
+
+  `;
+
+}
+
+/* =========================================================
+   HABIT MONTH CHART
+========================================================= */
+
+function renderHabitMonthChart(){
+
+  const days=daysInMonth(currentMonth);
+
+  const month=data.months[currentMonth];
+
+  const values=[];
+
+  const labels=[];
+
+  for(let day=1;day<=days;day++){
+
+    let completed=0;
+
+    month.habits.forEach(
+      (_,index)=>{
+        if(
+          month.checks[
+            `${index}-${day}`
+          ]
+        ){
+          completed++;
+        }
+      }
+    );
+
+    const pct=
+      month.habits.length
+        ?completed/month.habits.length*100
+        :0;
+
+    values.push(
+      Math.round(pct)
+    );
+
+    labels.push(
+      String(day)
+    );
+
+  }
+
+  document.getElementById(
+    "habitMonthChart"
+  ).innerHTML=
+    lineChart(
+      values,
+      labels,
+      100
+    );
+
+}
+
+/* =========================================================
+   WEEK UTILITIES
+========================================================= */
+
+function getMonday(date){
+
+  const d=new Date(date);
+
+  const day=d.getDay();
+
+  const diff=
+    day===0
+      ?-6
+      :1-day;
+
+  d.setDate(
+    d.getDate()+diff
+  );
+
+  d.setHours(0,0,0,0);
+
+  return d;
+
+}
+
+function dateKey(date){
+
+  return[
+    date.getFullYear(),
+    String(date.getMonth()+1).padStart(2,"0"),
+    String(date.getDate()).padStart(2,"0")
+  ].join("-");
+
+}
+
+function getWeekKey(date){
+
+  return dateKey(
+    getMonday(date)
+  );
+
+}
+
+function getWeekDate(){
+
+  const monday=
+    getMonday(new Date());
+
+  monday.setDate(
+    monday.getDate()+
+    currentWeekOffset*7
+  );
+
+  return monday;
+
+}
+
+function getCurrentWeek(){
+
+  const key=
+    getWeekKey(
+      getWeekDate()
+    );
+
+  if(!data.weeks[key]){
+    data.weeks[key]=blankWeek();
+  }
+
+  const week=data.weeks[key];
+
+  if(!week.days){
+    week.days={};
+  }
+
+  for(let i=0;i<7;i++){
+
+    if(!Array.isArray(week.days[i])){
+      week.days[i]=[];
+    }
+
+  }
+
+  if(!Array.isArray(week.goals)){
+    week.goals=[];
+  }
+
+  return week;
+
+}
+
+/* =========================================================
+   WEEK
+========================================================= */
+
+function renderWeek(){
+
+  const monday=getWeekDate();
+
+  const week=getCurrentWeek();
+
+  const sunday=new Date(monday);
+
+  sunday.setDate(
+    sunday.getDate()+6
+  );
+
+  document.getElementById("weekTitle")
+    .textContent=
+      `${formatShortDate(monday)}
+      – ${formatShortDate(sunday)}`;
+
+  document.getElementById("weekLabel").value=
+    week.label||"";
+
+  document.getElementById("weekFocus").value=
+    week.focus||"";
+
+  document.getElementById("weekIntent").value=
+    week.intent||"";
+
+  document.getElementById("weekReview").value=
+    week.review||"";
+
+  renderWeeklyGoals(week);
+
+  renderWeekCalendar(week,monday);
+
+}
+
+function formatShortDate(date){
+
+  return date.toLocaleDateString(
+    "es-ES",
+    {
+      day:"numeric",
+      month:"short"
+    }
+  );
+
+}
+
+function renderWeeklyGoals(week){
+
+  const container=
+    document.getElementById("weeklyGoals");
+
+  if(!week.goals.length){
+
+    container.innerHTML=`
+      <div
+        class="tiny"
+        style="
+          padding:20px;
+          text-align:center;
+          border:1px dashed var(--line);
+          border-radius:12px">
+        Todavía no tienes metas para esta semana.
+      </div>
+    `;
+
+  }else{
+
+    container.innerHTML=
+      week.goals.map(
+        (goal,i)=>`
+
+          <div class="week-goal">
+
+            <div class="week-goal-title">
+
+              <span>🎯</span>
+
+              <input
+                value="${escapeHTML(goal.text)}"
+                class="${
+                  goal.done
+                    ?"done"
+                    :""
+                }"
+                data-week-goal-input="${i}">
+
+            </div>
+
+            <button
+              class="delete-goal"
+              data-week-goal-delete="${i}">
+              ×
+            </button>
+
+          </div>
+
+        `
+      ).join("");
+
+  }
+
+  container
+    .querySelectorAll("[data-week-goal-input]")
+    .forEach(input=>{
+      input.addEventListener(
+        "input",
+        ()=>{
+          week.goals[
+            Number(input.dataset.weekGoalInput)
+          ].text=input.value;
+
+          saveQuiet();
+        }
+      );
+    });
+
+  container
+    .querySelectorAll("[data-week-goal-delete]")
+    .forEach(btn=>{
+      btn.addEventListener(
+        "click",
+        ()=>{
+          week.goals.splice(
+            Number(btn.dataset.weekGoalDelete),
+            1
+          );
+
+          saveQuiet();
+
+          renderWeek();
+        }
+      );
+    });
+
+  const total=
+    week.goals.length;
+
+  /*
+    Una meta semanal se considera
+    "cumplida" cuando la marcaste
+    al menos en un día.
+  */
+
+  const completed=
+    week.goals.filter(
+      goal=>
+        Array.isArray(goal.days)&&
+        goal.days.some(Boolean)
+    ).length;
+
+  const pct=
+    total
+      ?Math.round(completed/total*100)
+      :0;
+
+  document.getElementById("weekProgress").innerHTML=`
+
+    <div class="metric">
+
+      <span class="tiny">
+        Metas con actividad registrada
+      </span>
+
+      <strong>
+        ${completed}/${total} · ${pct}%
+      </strong>
+
+    </div>
+
+    <div class="bar" style="margin-top:7px">
+      <i style="width:${pct}%"></i>
+    </div>
+
+  `;
+
+}
+
+function addWeeklyGoal(){
+
+  const week=getCurrentWeek();
+
+  week.goals.push({
+    text:"Nueva meta",
+    done:false,
+    days:[]
+  });
+
+  saveQuiet();
+
+  renderWeek();
+
+}
+
+function renderWeekCalendar(week,monday){
+
+  const container=
+    document.getElementById("weekCalendar");
+
+  container.innerHTML=
+    DAYS.map(
+      (dayName,index)=>{
+
+        const date=new Date(monday);
+
+        date.setDate(
+          date.getDate()+index
+        );
+
+        const dateK=dateKey(date);
+
+        const today=
+          dateKey(new Date())===dateK;
+
+        const tasks=
+          week.days[index]||[];
+
+        return`
+
+          <div
+            class="
+              calendar-day
+              ${today?"today":""}
+            ">
+
+            <div class="day-title">
+              ${SHORT_DAYS[index]}
+            </div>
+
+            <div class="day-date">
+              ${date.toLocaleDateString(
+                "es-ES",
+                {
+                  day:"numeric",
+                  month:"short"
+                }
+              )}
+            </div>
+
+            <div>
+
+              ${
+                tasks.map(
+                  (task,taskIndex)=>`
+
+                    <label
+                      class="
+                        day-task
+                        ${
+                          task.done
+                            ?"done"
+                            :""
+                        }
+                      ">
+
+                      <input
+                        type="checkbox"
+                        ${
+                          task.done
+                            ?"checked"
+                            :""
+                        }
+                        data-day-task-check="${index}"
+                        data-task-index="${taskIndex}">
+
+                      <span>
+                        ${escapeHTML(task.text)}
+                      </span>
+
+                    </label>
+
+                  `
+                ).join("")
+              }
+
+            </div>
+
+            <button
+              class="add-day-task"
+              data-add-day-task="${index}">
+              ＋ Agregar checklist
+            </button>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+  container
+    .querySelectorAll("[data-day-task-check]")
+    .forEach(input=>{
+      input.addEventListener(
+        "change",
+        ()=>{
+          const day=
+            Number(input.dataset.dayTaskCheck);
+
+          const taskIndex=
+            Number(input.dataset.taskIndex);
+
+          week.days[day][taskIndex].done=
+            input.checked;
+
+          saveQuiet();
+
+          renderWeekCalendar(
+            week,
+            monday
+          );
+        }
+      );
+    });
+
+  container
+    .querySelectorAll("[data-add-day-task]")
+    .forEach(btn=>{
+      btn.addEventListener(
+        "click",
+        ()=>{
+          const day=
+            Number(btn.dataset.addDayTask);
+
+          const text=
+            prompt(
+              `Checklist para ${DAYS[day]}:`
+            );
+
+          if(!text)return;
+
+          week.days[day].push({
+            text:text.trim(),
+            done:false
+          });
+
+          saveQuiet();
+
+          renderWeekCalendar(
+            week,
+            monday
+          );
+        }
+      );
+    });
+
+}
+
+/* =========================================================
+   WEEK INPUTS
+========================================================= */
+
+function setupWeekInputs(){
+
+  document.getElementById("weekLabel")
+    .addEventListener(
+      "input",
+      e=>{
+        getCurrentWeek().label=
+          e.target.value;
+
+        saveQuiet();
+      }
+    );
+
+  document.getElementById("weekFocus")
+    .addEventListener(
+      "input",
+      e=>{
+        getCurrentWeek().focus=
+          e.target.value;
+
+        saveQuiet();
+      }
+    );
+
+  document.getElementById("weekIntent")
+    .addEventListener(
+      "input",
+      e=>{
+        getCurrentWeek().intent=
+          e.target.value;
+
+        saveQuiet();
+      }
+    );
+
+  document.getElementById("weekReview")
+    .addEventListener(
+      "input",
+      e=>{
+        getCurrentWeek().review=
+          e.target.value;
+
+        saveQuiet();
+      }
+    );
+
+}
+
+document.getElementById("prevWeek")
+  .addEventListener(
+    "click",
+    ()=>{
+      currentWeekOffset--;
+      renderWeek();
+    }
+  );
+
+document.getElementById("nextWeek")
+  .addEventListener(
+    "click",
+    ()=>{
+      currentWeekOffset++;
+      renderWeek();
+    }
+  );
+
+/* =========================================================
+   SKILLS
+========================================================= */
+
+function skillMonths(index){
+
+  return[
+    index*2,
+    index*2+1
+  ];
+
+}
+
+function renderSkills(){
+
+  document.getElementById("skillGrid")
+    .innerHTML=
+      SKILLS.map(
+        (skill,index)=>{
+
+          const months=skillMonths(index);
+
+          const scores=
+            months.map(
+              m=>
+                data.skills[index]
+                  .months[m%2]
+                  .score
+            );
+
+          const average=
+            scores.reduce(
+              (a,b)=>a+b,
+              0
+            )/scores.length;
+
+          return`
+
+            <button
+              class="
+                skill
+                ${
+                  index===currentSkill
+                    ?"current"
+                    :""
+                }
+              "
+              data-skill="${index}">
+
+              <span class="dot"></span>
+
+              <strong>
+                ${skill}
+              </strong>
+
+              <div class="skill-cycle">
+                ${MONTHS[months[0]]}
+                –
+                ${MONTHS[months[1]]}
+              </div>
+
+              <div class="tiny">
+                Promedio: ${average.toFixed(1)}/10
+              </div>
+
+            </button>
+
+          `;
+
+        }
+      ).join("");
+
+  document
+    .querySelectorAll("[data-skill]")
+    .forEach(btn=>{
+      btn.addEventListener(
+        "click",
+        ()=>{
+          currentSkill=
+            Number(btn.dataset.skill);
+
+          renderSkills();
+        }
+      );
+    });
+
+  const months=skillMonths(currentSkill);
+
+  const skill=
+    data.skills[currentSkill];
+
+  document.getElementById("skillCurrentTitle")
+    .textContent=
+      SKILLS[currentSkill];
+
+  document.getElementById("skillCycleDescription")
+    .textContent=
+      `Ciclo de dos meses:
+      ${MONTHS[months[0]]} y ${MONTHS[months[1]]}.`;
+
+  document.getElementById("skillHistory").innerHTML=
+    months.map(
+      (monthIndex,position)=>{
+
+        const localIndex=position;
+
+        const record=
+          skill.months[localIndex];
+
+        return`
+
+          <div class="skill-month">
+
+            <strong>
+              ${MONTHS[monthIndex]}
+              ${data.year}
+            </strong>
+
+            <div class="barrow">
+
+              <span class="tiny">
+                Calificación
+              </span>
+
+              <input
+                type="range"
+                min="1"
+                max="10"
+                value="${record.score}"
+                data-skill-month="${localIndex}">
+
+              <strong
+                data-skill-month-value="${localIndex}">
+                ${record.score}
+              </strong>
+
+            </div>
+
+            <textarea
+              class="input"
+              style="min-height:110px"
+              placeholder="Reflexión de este mes…"
+              data-skill-month-reflection="${localIndex}">${escapeHTML(
+                record.reflection||""
+              )}</textarea>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+  document
+    .querySelectorAll("[data-skill-month]")
+    .forEach(input=>{
+      input.addEventListener(
+        "input",
+        ()=>{
+          const i=
+            Number(input.dataset.skillMonth);
+
+          skill.months[i].score=
+            Number(input.value);
+
+          document
+            .querySelector(
+              `[data-skill-month-value="${i}"]`
+            )
+            .textContent=input.value;
+
+          saveQuiet();
+
+          renderSkillChart();
+        }
+      );
+    });
+
+  document
+    .querySelectorAll(
+      "[data-skill-month-reflection]"
+    )
+    .forEach(input=>{
+      input.addEventListener(
+        "input",
+        ()=>{
+          const i=
+            Number(
+              input.dataset.skillMonthReflection
+            );
+
+          skill.months[i].reflection=
+            input.value;
+
+          saveQuiet();
+        }
+      );
+    });
+
+  document.getElementById("skillReflection").value=
+    skill.reflection||"";
+
+  document.getElementById("skillReflection")
+    .oninput=
+      e=>{
+        skill.reflection=e.target.value;
+        saveQuiet();
+      };
+
+  renderSkillChart();
+
+}
+
+/* =========================================================
+   SKILL CHART
+========================================================= */
+
+function renderSkillChart(){
+
+  const skill=data.skills[currentSkill];
+
+  const months=skillMonths(currentSkill);
+
+  const values=[
+    skill.months[0].score,
+    skill.months[1].score
+  ];
+
+  document.getElementById("skillChart")
+    .innerHTML=
+      lineChart(
+        values,
+        months.map(m=>MONTHS[m].slice(0,3)),
+        10
+      );
+
+}
+
+/* =========================================================
+   REVIEWS
+========================================================= */
+
+function reviewTextArea(
+  key,
+  value,
+  placeholder
+){
+
+  return`
+
+    <textarea
+      class="input"
+      data-review-field="${key}"
+      placeholder="${placeholder}">${escapeHTML(value||"")}</textarea>
+
+  `;
+
+}
+
+function saveReviewField(key,value){
+
+  if(
+    key.startsWith("monthly.")
+  ){
+
+    const month=
+      key.split(".")[1];
+
+    data.reviews.monthly[month]=value;
+
+  }
+
+  if(
+    key.startsWith("weekly.")
+  ){
+
+    const field=
+      key.split(".")[1];
+
+    if(!data.reviews.weekly){
+      data.reviews.weekly={};
+    }
+
+    data.reviews.weekly[field]=value;
+
+  }
+
+  if(
+    key.startsWith("quarterly.")
+  ){
+
+    const q=
+      key.split(".")[1];
+
+    data.reviews.quarterly[q]=value;
+
+  }
+
+  if(
+    key.startsWith("annual.")
+  ){
+
+    const field=
+      key.split(".")[1];
+
+    if(typeof data.reviews.annual==="string"){
+      data.reviews.annual={};
+    }
+
+    data.reviews.annual[field]=value;
+
+  }
+
+  saveQuiet();
+
+}
+
+function bindReviewInputs(){
+
+  document
+    .querySelectorAll("[data-review-field]")
+    .forEach(input=>{
+      input.addEventListener(
+        "input",
+        ()=>{
+          saveReviewField(
+            input.dataset.reviewField,
+            input.value
+          );
+        }
+      );
+    });
+
+}
+
+function renderReviews(){
+
+  renderMonthlyReview();
+  renderWeeklyReview();
+  renderQuarterlyReview();
+  renderAnnualReview();
+
+  bindReviewInputs();
+
+}
+
+/* =========================================================
+   MONTHLY REVIEW
+========================================================= */
+
+function renderMonthlyReview(){
+
+  const m=currentReviewMonth;
+
+  const stored=
+    data.reviews.monthly[m]||{};
+
+  document.getElementById("review-monthly")
+    .innerHTML=`
+
+      <div class="review-sheet">
+
+        <div class="review-toolbar">
+
+          <button
+            class="round-btn"
+            id="prevReviewMonth">
+            ‹
+          </button>
+
+          <strong>
+            ${MONTHS[m]} ${data.year}
+          </strong>
+
+          <button
+            class="round-btn"
+            id="nextReviewMonth">
+            ›
+          </button>
+
+        </div>
+
+        <div class="eyebrow">
+          REVISIÓN MENSUAL
+        </div>
+
+        <h2>
+          Mi ${MONTHS[m]}
+        </h2>
+
+        <p class="intro">
+          Una mirada completa al mes,
+          dividida en pequeños espacios
+          para que escribir resulte más fácil.
+        </p>
+
+        <div class="review-box-grid">
+
+          <div class="review-box">
+
+            <h3>
+              ✦ Lo que salió bien
+            </h3>
+
+            <div class="tiny">
+              ¿Qué quiero repetir?
+            </div>
+
+            ${reviewTextArea(
+              `monthly.${m}.wins`,
+              stored.wins,
+              "Mis logros, momentos bonitos y avances…"
+            )}
+
+          </div>
+
+          <div class="review-box">
+
+            <h3>
+              ♡ Lo que me costó
+            </h3>
+
+            <div class="tiny">
+              ¿Qué necesito comprender?
+            </div>
+
+            ${reviewTextArea(
+              `monthly.${m}.difficulties`,
+              stored.difficulties,
+              "Lo difícil, incómodo o pendiente…"
+            )}
+
+          </div>
+
+          <div class="review-box">
+
+            <h3>
+              → Lo que aprendí
+            </h3>
+
+            <div class="tiny">
+              ¿Qué me llevo?
+            </div>
+
+            ${reviewTextArea(
+              `monthly.${m}.learning`,
+              stored.learning,
+              "Aprendizajes y descubrimientos…"
+            )}
+
+          </div>
+
+          <div class="review-box">
+
+            <h3>
+              🌱 Lo que quiero cambiar
+            </h3>
+
+            <div class="tiny">
+              ¿Qué necesita mi atención?
+            </div>
+
+            ${reviewTextArea(
+              `monthly.${m}.change`,
+              stored.change,
+              "Algo que quiero ajustar…"
+            )}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  document.getElementById("prevReviewMonth")
+    .onclick=()=>{
+      currentReviewMonth=
+        (currentReviewMonth+11)%12;
+
+      renderReviews();
+    };
+
+  document.getElementById("nextReviewMonth")
+    .onclick=()=>{
+      currentReviewMonth=
+        (currentReviewMonth+1)%12;
+
+      renderReviews();
+    };
+
+}
+
+/* =========================================================
+   WEEKLY REVIEW
+========================================================= */
+
+function renderWeeklyReview(){
+
+  const key=getWeekKey(getWeekDate());
+
+  const stored=
+    data.reviews.weekly[key]||{};
+
+  document.getElementById("review-weekly")
+    .innerHTML=`
+
+      <div class="review-sheet">
+
+        <div class="period-nav">
+
+          <button
+            class="round-btn"
+            id="prevWeeklyReview">
+            ‹
+          </button>
+
+          <strong>
+            Semana
+            ${formatShortDate(getWeekDate())}
+          </strong>
+
+          <button
+            class="round-btn"
+            id="nextWeeklyReview">
+            ›
+          </button>
+
+        </div>
+
+        <div class="eyebrow">
+          REVISIÓN SEMANAL
+        </div>
+
+        <h2>
+          Cierro esta semana
+        </h2>
+
+        <div class="review-three">
+
+          <div class="review-box">
+
+            <h3>✓ Gané</h3>
+
+            <div class="tiny">
+              ¿Qué salió bien?
+            </div>
+
+            ${reviewTextArea(
+              `weekly.${key}.wins`,
+              stored.wins,
+              "Mis avances…"
+            )}
+
+          </div>
+
+          <div class="review-box">
+
+            <h3>↻ Ajusto</h3>
+
+            <div class="tiny">
+              ¿Qué haré diferente?
+            </div>
+
+            ${reviewTextArea(
+              `weekly.${key}.adjust`,
+              stored.adjust,
+              "Lo que voy a modificar…"
+            )}
+
+          </div>
+
+          <div class="review-box">
+
+            <h3>♡ Sentí</h3>
+
+            <div class="tiny">
+              ¿Cómo estuvo mi energía?
+            </div>
+
+            ${reviewTextArea(
+              `weekly.${key}.feelings`,
+              stored.feelings,
+              "Cómo me sentí…"
+            )}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  document.getElementById("prevWeeklyReview")
+    .onclick=()=>{
+      currentWeekOffset--;
+      renderReviews();
+    };
+
+  document.getElementById("nextWeeklyReview")
+    .onclick=()=>{
+      currentWeekOffset++;
+      renderReviews();
+    };
+
+}
+
+/* =========================================================
+   QUARTERLY REVIEW
+========================================================= */
+
+function renderQuarterlyReview(){
+
+  const q=currentQuarter;
+
+  const stored=
+    data.reviews.quarterly[q]||{};
+
+  document.getElementById("review-quarterly")
+    .innerHTML=`
+
+      <div class="review-sheet">
+
+        <div class="period-nav">
+
+          <button
+            class="round-btn"
+            id="prevQuarter">
+            ‹
+          </button>
+
+          <strong>
+            Trimestre ${q}
+          </strong>
+
+          <button
+            class="round-btn"
+            id="nextQuarter">
+            ›
+          </button>
+
+        </div>
+
+        <div class="eyebrow">
+          REVISIÓN TRIMESTRAL
+        </div>
+
+        <h2>
+          Los últimos tres meses
+        </h2>
+
+        <p class="intro">
+          Aquí buscamos patrones,
+          no momentos aislados.
+        </p>
+
+        <div class="review-box-grid">
+
+          <div class="review-box">
+
+            <h3>📈 Evolución</h3>
+
+            <div class="tiny">
+              ¿En qué mejoré?
+            </div>
+
+            ${reviewTextArea(
+              `quarterly.${q}.evolution`,
+              stored.evolution,
+              "Mis avances…"
+            )}
+
+          </div>
+
+          <div class="review-box">
+
+            <h3>🎯 Metas</h3>
+
+            <div class="tiny">
+              ¿Qué sigue importando?
+            </div>
+
+            ${reviewTextArea(
+              `quarterly.${q}.goals`,
+              stored.goals,
+              "Qué metas avancé o abandoné…"
+            )}
+
+          </div>
+
+          <div class="review-box">
+
+            <h3>✦ Patrones</h3>
+
+            <div class="tiny">
+              ¿Qué se repite?
+            </div>
+
+            ${reviewTextArea(
+              `quarterly.${q}.patterns`,
+              stored.patterns,
+              "Patrones que estoy detectando…"
+            )}
+
+          </div>
+
+          <div class="review-box">
+
+            <h3>🌱 Próximo trimestre</h3>
+
+            <div class="tiny">
+              ¿Dónde pongo mi energía?
+            </div>
+
+            ${reviewTextArea(
+              `quarterly.${q}.next`,
+              stored.next,
+              "Mi siguiente enfoque…"
+            )}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  document.getElementById("prevQuarter")
+    .onclick=()=>{
+      currentQuarter=
+        currentQuarter===1
+          ?4
+          :currentQuarter-1;
+
+      renderReviews();
+    };
+
+  document.getElementById("nextQuarter")
+    .onclick=()=>{
+      currentQuarter=
+        currentQuarter===4
+          ?1
+          :currentQuarter+1;
+
+      renderReviews();
+    };
+
+}
+
+/* =========================================================
+   ANNUAL REVIEW
+========================================================= */
+
+function renderAnnualReview(){
+
+  let stored=data.reviews.annual;
+
+  if(typeof stored==="string"){
+    stored={general:stored};
+  }
+
+  document.getElementById("review-annual")
+    .innerHTML=`
+
+      <div class="review-sheet">
+
+        <div class="eyebrow">
+          GRAN REVISIÓN ANUAL
+        </div>
+
+        <h2>
+          Mi ${data.year}
+        </h2>
+
+        <p class="intro">
+          No para juzgar el año,
+          sino para entenderlo.
+        </p>
+
+        <div class="review-box-grid">
+
+          <div class="review-box">
+
+            <h3>✦ Mi mayor logro</h3>
+
+            ${reviewTextArea(
+              "annual.achievement",
+              stored.achievement,
+              "Lo que más orgullo me da…"
+            )}
+
+          </div>
+
+          <div class="review-box">
+
+            <h3>♡ Mi mayor aprendizaje</h3>
+
+            ${reviewTextArea(
+              "annual.learning",
+              stored.learning,
+              "Lo que ahora sé…"
+            )}
+
+          </div>
+
+          <div class="review-box">
+
+            <h3>🌱 Cómo cambié</h3>
+
+            ${reviewTextArea(
+              "annual.change",
+              stored.change,
+              "La persona que fui construyendo…"
+            )}
+
+          </div>
+
+          <div class="review-box">
+
+            <h3>→ Lo que viene</h3>
+
+            ${reviewTextArea(
+              "annual.future",
+              stored.future,
+              "Lo que quiero para el siguiente año…"
+            )}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+}
+
+/* =========================================================
+   REVIEW TABS
+========================================================= */
+
+document
+  .querySelectorAll("[data-review]")
+  .forEach(btn=>{
+
+    btn.addEventListener(
+      "click",
+      ()=>{
+
+        document
+          .querySelectorAll(".review-tabs button")
+          .forEach(b=>
+            b.classList.remove("active")
+          );
+
+        document
+          .querySelectorAll(".review-pane")
+          .forEach(p=>
+            p.classList.remove("active")
+          );
+
+        btn.classList.add("active");
+
+        document.getElementById(
+          `review-${btn.dataset.review}`
+        ).classList.add("active");
+
+        renderReviews();
+
+      }
+    );
+
+  });
+
+/* =========================================================
+   HOME - CÁLCULOS
+========================================================= */
+
+function monthAverage(index){
+
+  const m=data.months[index];
+
+  return(
+    Number(m.metrics.energia)+
+    Number(m.metrics.emocion)+
+    Number(m.metrics.bienestar)
+  )/3;
+
+}
+
+function annualGoalStats(){
+
+  let total=0;
+  let done=0;
+
+  for(let i=0;i<12;i++){
+
+    const goals=data.months[i].goals||[];
+
+    total+=goals.length;
+
+    done+=
+      goals.filter(
+        g=>g.done
+      ).length;
+
+  }
+
+  return{
+    total,
+    done,
+    pct:total
+      ?Math.round(done/total*100)
+      :0
+  };
+
+}
+
+function strongestHabit(){
+
+  const totals={};
+
+  for(let m=0;m<12;m++){
+
+    const month=data.months[m];
+
+    month.habits.forEach(
+      (habit,index)=>{
+
+        if(!habit)return;
+
+        let total=0;
+        let done=0;
+
+        const days=daysInMonth(m);
+
+        for(let d=1;d<=days;d++){
+
+          total++;
+
+          if(
+            month.checks[
+              `${index}-${d}`
+            ]
+          ){
+            done++;
+          }
+
+        }
+
+        if(!totals[habit]){
+          totals[habit]={
+            done:0,
+            total:0
+          };
+        }
+
+        totals[habit].done+=done;
+        totals[habit].total+=total;
+
+      }
+    );
+
+  }
+
+  const entries=
+    Object.entries(totals)
+      .filter(
+        ([_,v])=>v.total>0
+      )
+      .map(
+        ([name,v])=>({
+          name,
+          pct:v.done/v.total*100
+        })
+      )
+      .sort(
+        (a,b)=>b.pct-a.pct
+      );
+
+  return{
+    best:entries[0]||null,
+    worst:entries[entries.length-1]||null
+  };
+
+}
+
+function recentTrend(){
+
+  const values=
+    MONTHS.map(
+      (_,i)=>monthAverage(i)
+    );
+
+  const recent=
+    values.slice(-3);
+
+  if(recent.length<2){
+    return{
+      direction:"estable",
+      amount:0
+    };
+  }
+
+  const first=recent[0];
+  const last=recent[recent.length-1];
+
+  const diff=last-first;
+
+  if(diff>.4){
+    return{
+      direction:"subiendo",
+      amount:diff
+    };
+  }
+
+  if(diff<-.4){
+    return{
+      direction:"bajando",
+      amount:Math.abs(diff)
+    };
+  }
+
+  return{
+    direction:"estable",
+    amount:Math.abs(diff)
+  };
+
+}
+
+/*
+  Compara si los meses con mayor constancia
+  también tienen mayor bienestar.
+*/
+
+function habitWellbeingCorrelation(){
+
+  const pairs=[];
+
+  for(let i=0;i<12;i++){
+
+    const habit=habitPercentage(i);
+
+    const wellbeing=
+      data.months[i]
+        .metrics
+        .bienestar;
+
+    /*
+      Solo usamos meses con
+      alguna actividad registrada.
+    */
+
+    const hasData=
+      Object.keys(
+        data.months[i].checks||{}
+      ).length>0;
+
+    if(hasData){
+      pairs.push({
+        habit,
+        wellbeing
+      });
+    }
+
+  }
+
+  if(pairs.length<2){
+    return null;
+  }
+
+  const avgX=
+    pairs.reduce(
+      (s,p)=>s+p.habit,
+      0
+    )/pairs.length;
+
+  const avgY=
+    pairs.reduce(
+      (s,p)=>s+p.wellbeing,
+      0
+    )/pairs.length;
+
+  let numerator=0;
+  let denominatorX=0;
+  let denominatorY=0;
+
+  pairs.forEach(
+    p=>{
+      const x=p.habit-avgX;
+      const y=p.wellbeing-avgY;
+
+      numerator+=x*y;
+      denominatorX+=x*x;
+      denominatorY+=y*y;
+    }
+  );
+
+  if(
+    denominatorX===0||
+    denominatorY===0
+  ){
+    return null;
+  }
+
+  const r=
+    numerator/
+    Math.sqrt(
+      denominatorX*
+      denominatorY
+    );
+
+  return r;
+
+}
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function renderHome(){
+
+  const averages=
+    MONTHS.map(
+      (_,i)=>monthAverage(i)
+    );
+
+  const averageYear=
+    averages.reduce(
+      (a,b)=>a+b,
+      0
+    )/12;
+
+  const bestMonth=
+    averages.indexOf(
+      Math.max(...averages)
+    );
+
+  const worstMonth=
+    averages.indexOf(
+      Math.min(...averages)
+    );
+
+  const goals=annualGoalStats();
+
+  const habitValues=
+    MONTHS.map(
+      (_,i)=>habitPercentage(i)
+    );
+
+  const habitOverall=
+    habitValues.reduce(
+      (a,b)=>a+b,
+      0
+    )/12;
+
+  const habits=strongestHabit();
+
+  const trend=recentTrend();
+
+  const correlation=
+    habitWellbeingCorrelation();
+
+  document.getElementById("homeMetrics")
+    .innerHTML=`
+
+      <div class="card">
+
+        <div class="tiny">
+          Promedio vital
+        </div>
+
+        <strong style="font-size:28px">
+          ${averageYear.toFixed(1)}/10
+        </strong>
+
+        <div class="tiny">
+          energía · emoción · bienestar
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <div class="tiny">
+          Mejor mes
+        </div>
+
+        <strong style="font-size:24px">
+          ${MONTHS[bestMonth]}
+        </strong>
+
+        <div class="tiny">
+          ${averages[bestMonth].toFixed(1)}/10
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <div class="tiny">
+          Metas completadas
+        </div>
+
+        <strong style="font-size:28px">
+          ${goals.pct}%
+        </strong>
+
+        <div class="tiny">
+          ${goals.done}/${goals.total}
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <div class="tiny">
+          Constancia promedio
+        </div>
+
+        <strong style="font-size:28px">
+          ${habitOverall.toFixed(0)}%
+        </strong>
+
+        <div class="tiny">
+          hábitos registrados
+        </div>
+
+      </div>
+
+    `;
+
+  /* GRÁFICA VITAL */
+
+  document.getElementById("annualLineChart")
+    .innerHTML=
+      lineChart(
+        averages,
+        MONTHS.map(m=>m.slice(0,3)),
+        10
+      );
+
+  /* GRÁFICA HÁBITOS */
+
+  document.getElementById("habitLineChart")
+    .innerHTML=
+      lineChart(
+        habitValues,
+        MONTHS.map(m=>m.slice(0,3)),
+        100
+      );
+
+  /* BARRAS */
+
+  document.getElementById("annualBars")
+    .innerHTML=
+      MONTHS.map(
+        (month,i)=>`
+
+          <div class="barrow">
+
+            <b>${month.slice(0,3)}</b>
+
+            <div class="bar">
+              <i
+                style="
+                  width:${averages[i]*10}%
+                ">
+              </i>
+            </div>
+
+            <b>
+              ${averages[i].toFixed(1)}
+            </b>
+
+          </div>
+
+        `
+      ).join("");
+
+  /* PALABRAS */
+
+  const words=
+    MONTHS
+      .map(
+        (_,i)=>
+          data.months[i].word
+      )
+      .filter(Boolean);
+
+  document.getElementById("wordCloud")
+    .innerHTML=
+      words.length
+        ?words.map(
+          (word,i)=>`
+            <span
+              class="tag"
+              style="
+                font-size:${10+(i%4)*2}px">
+              ${escapeHTML(word)}
+            </span>
+          `
+        ).join("")
+        :`
+          <span class="tiny">
+            Tus palabras del mes aparecerán aquí.
+          </span>
+        `;
+
+  /* ANÁLISIS */
+
+  let correlationText=
+    "Todavía no hay suficientes meses con datos de hábitos para comparar la constancia con el bienestar.";
+
+  if(correlation!==null){
+
+    const strength=
+      Math.abs(correlation);
+
+    let description="débil";
+
+    if(strength>=.7){
+      description="fuerte";
+    }else if(strength>=.4){
+      description="moderada";
+    }
+
+    if(correlation>0.15){
+
+      correlationText=
+        `Existe una relación positiva ${description}
+        (r=${correlation.toFixed(2)}) entre la constancia
+        de hábitos y el bienestar en los meses registrados.
+        Esto no demuestra causalidad, pero sí señala un patrón
+        interesante para observar.`;
+
+    }else if(correlation<-0.15){
+
+      correlationText=
+        `Aparece una relación negativa ${description}
+        (r=${correlation.toFixed(2)}) entre constancia
+        y bienestar. Conviene revisar qué estaba ocurriendo
+        en esos meses antes de sacar conclusiones.`;
+
+    }else{
+
+      correlationText=
+        `La relación entre constancia y bienestar es pequeña
+        (r=${correlation.toFixed(2)}). En tus datos actuales
+        no parece haber una asociación clara.`;
+
+    }
+
+  }
+
+  const trendText=
+    trend.direction==="subiendo"
+      ?`Tus últimos meses muestran una tendencia ascendente de aproximadamente ${trend.amount.toFixed(1)} puntos.`
+      :trend.direction==="bajando"
+        ?`Tus últimos meses muestran una tendencia descendente de aproximadamente ${trend.amount.toFixed(1)} puntos.`
+        :"Tus últimos meses se mantienen relativamente estables.";
+
+  const bestHabitText=
+    habits.best
+      ?`Tu hábito más consistente es <strong>${escapeHTML(habits.best.name)}</strong>, con ${habits.best.pct.toFixed(0)}% de cumplimiento.`
+      :"Todavía no hay suficientes registros para determinar cuál es tu hábito más consistente.";
+
+  const worstHabitText=
+    habits.worst
+      ?`El hábito con menor cumplimiento es <strong>${escapeHTML(habits.worst.name)}</strong>, con ${habits.worst.pct.toFixed(0)}%.`
+      :"Todavía no hay suficientes registros para detectar un hábito débil.";
+
+  document.getElementById("annualAnalysis")
+    .innerHTML=`
+
+      <div class="analysis-grid">
+
+        <div class="analysis-box">
+
+          <strong>
+            1. Mejor mes
+          </strong>
+
+          <ul class="analysis-list">
+
+            <li>
+              Tu mejor mes según energía,
+              emoción y bienestar fue
+              <strong>
+                ${MONTHS[bestMonth]}
+              </strong>
+              con
+              <strong>
+                ${averages[bestMonth].toFixed(1)}/10
+              </strong>.
+            </li>
+
+            <li>
+              El mes más bajo fue
+              <strong>
+                ${MONTHS[worstMonth]}
+              </strong>
+              con
+              <strong>
+                ${averages[worstMonth].toFixed(1)}/10
+              </strong>.
+            </li>
+
+          </ul>
+
+        </div>
+
+        <div class="analysis-box">
+
+          <strong>
+            2. Tendencia reciente
+          </strong>
+
+          <p>
+            ${trendText}
+          </p>
+
+        </div>
+
+        <div class="analysis-box">
+
+          <strong>
+            3. Análisis de hábitos
+          </strong>
+
+          <p>
+            ${bestHabitText}
+          </p>
+
+          <p>
+            ${worstHabitText}
+          </p>
+
+        </div>
+
+        <div class="analysis-box">
+
+          <strong>
+            4. Hábitos vs bienestar
+          </strong>
+
+          <p>
+            ${correlationText}
+          </p>
+
+        </div>
+
+        <div class="analysis-box">
+
+          <strong>
+            5. Metas
+          </strong>
+
+          <p>
+            Has completado
+            <strong>
+              ${goals.done}
+            </strong>
+            de
+            <strong>
+              ${goals.total}
+            </strong>
+            metas registradas
+            (${goals.pct}%).
+          </p>
+
+          <p class="tiny">
+            Una tasa baja no significa fracaso:
+            puede indicar que las metas fueron demasiado
+            grandes, poco concretas o que tus prioridades
+            cambiaron.
+          </p>
+
+        </div>
+
+        <div class="analysis-box">
+
+          <strong>
+            6. Lectura general
+          </strong>
+
+          <p>
+            Tu promedio vital anual es
+            <strong>
+              ${averageYear.toFixed(1)}/10
+            </strong>.
+            El análisis mejora conforme registras
+            más meses, porque se pueden comparar
+            tendencias y no solamente momentos aislados.
+          </p>
+
+        </div>
+
+      </div>
+
+    `;
+
+  /* REFLEXIONES */
+
+  const reflections=
+    MONTHS.map(
+      (_,i)=>{
+
+        const text=
+          data.months[i].reflection;
+
+        if(!text)return null;
+
+        return`
+
+          <div
+            style="
+              padding:10px 0;
+              border-bottom:1px solid var(--line)">
+
+            <strong>
+              ${MONTHS[i]}
+            </strong>
+
+            <div class="tiny">
+              ${escapeHTML(
+                text.slice(0,220)
+              )}
+              ${text.length>220?"…":""}
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    )
+    .filter(Boolean)
+    .slice(-5);
+
+  document.getElementById("homeReflections")
+    .innerHTML=
+      reflections.length
+        ?reflections.join("")
+        :`
+          <div class="tiny">
+            Todavía no hay reflexiones registradas.
+          </div>
+        `;
+
+}
+
+/* =========================================================
+   EXPORT / IMPORT
+========================================================= */
+
+function exportData(){
+
+  const blob=new Blob(
+    [
+      JSON.stringify(
+        data,
+        null,
+        2
+      )
+    ],
+    {
+      type:"application/json"
+    }
+  );
+
+  const url=
+    URL.createObjectURL(blob);
+
+  const link=
+    document.createElement("a");
+
+  link.href=url;
+
+  link.download=
+    `mi-vida-${data.year}.json`;
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  link.remove();
+
+  setTimeout(
+    ()=>URL.revokeObjectURL(url),
+    500
+  );
+
+  toast("Respaldo descargado ✓");
+
+}
+
+function importData(event){
+
+  const file=
+    event.target.files[0];
+
+  if(!file)return;
+
+  const reader=new FileReader();
+
+  reader.onload=()=>{
+
+    try{
+
+      const imported=
+        JSON.parse(reader.result);
+
+      data=
+        migrateData(imported);
+
+      saveQuiet();
+
+      initYear();
+
+      renderHome();
+
+      go("home");
+
+      toast("Datos restaurados ✓");
+
+    }catch(error){
+
+      console.error(error);
+
+      alert(
+        "El archivo no parece ser un respaldo válido."
+      );
+
+    }
+
+  };
+
+  reader.readAsText(file);
+
+}
+
+/* =========================================================
+   EVENTOS
+========================================================= */
+
+document.getElementById("homeMonthBtn")
+  .addEventListener(
+    "click",
+    ()=>go("mes")
+  );
+
+document.getElementById("homeExportBtn")
+  .addEventListener(
+    "click",
+    exportData
+  );
+
+document.getElementById("randomWordBtn")
+  .addEventListener(
+    "click",
+    randomWord
+  );
+
+document.getElementById("wheelBtn")
+  .addEventListener(
+    "click",
+    ()=>{
+      window.open(
+        "https://spinthewheel.io/es/wheels/UZldLdDyTNlxZtrC0diQcz0xJmU9MQ%253D%253D",
+        "_blank"
+      );
+    }
+  );
+
+document.getElementById("addMonthlyGoalBtn")
+  .addEventListener(
+    "click",
+    addMonthlyGoal
+  );
+
+document.getElementById("addHabitBtn")
+  .addEventListener(
+    "click",
+    addHabit
+  );
+
+document.getElementById("addWeeklyGoalBtn")
+  .addEventListener(
+    "click",
+    addWeeklyGoal
+  );
+
+document.getElementById("exportBtn")
+  .addEventListener(
+    "click",
+    exportData
+  );
+
+document.getElementById("importFile")
+  .addEventListener(
+    "change",
+    importData
+  );
+
+/* =========================================================
+   INIT
+========================================================= */
+
+setupMonthInputs();
+setupWeekInputs();
+initYear();
+
+go("home");
+
+</script>
+
+</body>
+</html>
